@@ -29,6 +29,8 @@
 	<talkaction words="/chameleon" separator=" " script="chameleon.lua" />
 	<talkaction words="/addskill" separator=" " script="add_skill.lua" />
 	<talkaction words="/aid" separator=" " script="set_actionid.lua" />
+	<talkaction words="/getstorage" separator=" " script="get_storage.lua"/>
+	<talkaction words="/setstorage" separator=" " script="set_storage.lua"/>
 	<talkaction words="/mccheck" script="mccheck.lua" />
 	<talkaction words="/ghost" script="ghost.lua" />
 	<talkaction words="/clean" script="clean.lua" />
