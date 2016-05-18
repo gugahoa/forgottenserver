@@ -15,8 +15,13 @@ function onSay(cid, words, param, type)
 	-- Extract the specified parameters.
 	local parameters = param:split(",")
 
-	if parameters[2] == nil then
+	if words == "/getstorage" and parameters[2] == nil then
 		player:sendCancelMessage("Insufficient parameters, usage: !getstorage playerName, key")
+		return false
+	end
+
+	if words == "/setstorage" and parameters[3] == nil then
+		player:sendCancelMessage("Insufficient parameters, usage: !setstorage playerName, key, value")
 		return false
 	end
 
@@ -26,20 +31,25 @@ function onSay(cid, words, param, type)
 
 	-- Get meta player.
 	local checkedPlayer = Player(playerName)
-
 	if not checkedPlayer then
 		player:sendCancelMessage(string.format("Could not find player '%s'.", playerName))
-
 		player:getPosition():sendMagicEffect(CONST_ME_BUBBLES)
 
 		return false
 	end
 
-	-- Get specified storage value from player.
-	local storageValue = checkedPlayer:getStorageValue(storageKey)
+	local storageValue = tonumber(parameters[3]) or checkedPlayer:getStorageValue(storageKey)
+	local msg = string.format("Storage key '%s' %s set to '%d' for player '%s'.", storageKey, "%s", storageValue, checkedPlayer:getName())
+	if words == "/setstorage" then
+		-- Set specified storage value on player.
+		checkedPlayer:setStorageValue(storageKey, storageValue)
+		msg = string.format(msg, "is now")
+	else
+		-- Get specified storage value from player.
+		msg = string.format(msg, "is currently")
+	end
 
 	-- Print the message in Local Chat in orange (only self can see).
-	player:sendTextMessage(MESSAGE_EVENT_ORANGE, string.format("Storage key '%s' is currently set to '%d' for player '%s'.", storageKey, storageValue, checkedPlayer:getName()))
-
+	player:sendTextMessage(MESSAGE_EVENT_ORANGE, msg)
 	player:getPosition():sendMagicEffect(CONST_ME_BUBBLES)
 end
