@@ -18,14 +18,15 @@ function onUse(cid, item, fromPosition, target, toPosition, isHotkey)
 			break
 		end
 
-		if reward:getWeight() > player:getFreeCapacity() then
-			player:sendTextMessage(MESSAGE_INFO_DESCR, 'You have found a ' .. reward:getName() .. ' weighing ' .. reward:getWeight()/100 .. ' oz it\'s too heavy.')
+		local rewardWeight = reward.getWeight and reward:getWeight() or ItemType(reward:getId()):getWeight(reward:getCount())
+		if rewardWeight > player:getFreeCapacity() then
+			player:sendTextMessage(MESSAGE_INFO_DESCR, 'You have found a ' .. reward:getName() .. ' weighing ' .. rewardWeight/100 .. ' oz it\'s too heavy.')
 			player:setStorageValue(uniqueid, i)
 			break
 		else
 			reward = reward:clone()
 			if not reward:moveTo(player) then
-				player:sendTextMessage(MESSAGE_INFO_DESCR, 'You have found a ' .. reward:getName() .. ' weighing ' .. reward:getWeight()/100 .. ' oz it\'s too heavy.')
+				player:sendTextMessage(MESSAGE_INFO_DESCR, 'You have found a ' .. reward:getName() .. ' weighing ' .. rewardWeight/100 .. ' oz it\'s too heavy.')
 				break
 			end
 
