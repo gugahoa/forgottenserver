@@ -25,7 +25,7 @@ function onUse(cid, item, fromPosition, target, toPosition, isHotkey)
 			break
 		else
 			reward = reward:clone()
-			if not reward:moveTo(player) then
+			if player:addItemEx(reward) ~= RETURNVALUE_NOERROR then
 				player:sendTextMessage(MESSAGE_INFO_DESCR, 'You have found a ' .. reward:getName() .. ' weighing ' .. rewardWeight/100 .. ' oz it\'s too heavy.')
 				break
 			end
