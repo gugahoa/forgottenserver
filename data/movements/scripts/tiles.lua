@@ -1,9 +1,9 @@
 local increasing = {[416] = 417, [426] = 425, [446] = 447, [3216] = 3217, [3202] = 3215, [11062] = 11063}
 local decreasing = {[417] = 416, [425] = 426, [447] = 446, [3217] = 3216, [3215] = 3202, [11063] = 11062}
 
-local function switchDecayState(depot, get, set)
-	for i = 0, depot:getSize() - 1 do
-		local item = depot:getItem(i)
+local function switchDecayState(container, get, set)
+	for i = 0, container:getSize() - 1 do
+		local item = container:getItem(i)
 		if get(item, ITEM_ATTRIBUTE_DECAYSTATE) then
 			set(item, ITEM_ATTRIBUTE_DECAYSTATE, 0)
 		end
@@ -77,7 +77,7 @@ function onStepOut(creature, item, position, fromPosition)
 		if depotItem ~= nil then
 			local depot = player:getDepotChest(getDepotId(depotItem:getUniqueId()), true)
 			switchDecayState(depot, Item.hasAttribute, Item.setAttribute)
-			switchDecayState(player:getInbox(), Item.canDecay, Item.decay)
+			switchDecayState(player:getInbox(), Item.hasAttribute, Item.setAttribute)
 			return true
 		end
 	end
