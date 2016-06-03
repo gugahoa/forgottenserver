@@ -53,6 +53,10 @@ void Inbox::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t
 	if (parent != nullptr) {
 		parent->postAddNotification(thing, oldParent, index, LINK_PARENT);
 	}
+
+	if (Item* item = thing->getItem()) {
+		item->setDecaying(DECAYING_FALSE);
+	}
 }
 
 void Inbox::postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t)

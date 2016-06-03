@@ -45,6 +45,7 @@ function onStepIn(creature, item, position, fromPosition)
 			player:sendTextMessage(MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItems .. " item" .. (depotItems > 1 and "s." or "."))
 
 			switchDecayState(depot, Item.canDecay, Item.decay)
+			switchDecayState(player:getInbox(), Item.canDecay, Item.decay)
 			return true
 		end
 	end
@@ -76,6 +77,7 @@ function onStepOut(creature, item, position, fromPosition)
 		if depotItem ~= nil then
 			local depot = player:getDepotChest(getDepotId(depotItem:getUniqueId()), true)
 			switchDecayState(depot, Item.hasAttribute, Item.setAttribute)
+			switchDecayState(player:getInbox(), Item.canDecay, Item.decay)
 			return true
 		end
 	end
