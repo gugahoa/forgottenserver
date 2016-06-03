@@ -55,7 +55,17 @@ void Inbox::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t
 	}
 
 	if (Item* item = thing->getItem()) {
-		item->setDecaying(DECAYING_FALSE);
+		if (item->getDecaying() == DECAYING_TRUE) {
+			item->setDecaying(DECAYING_FALSE);
+		}
+
+		if (Container* container = item->getContainer()) {
+			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
+				if ((*it)->getDecaying() == DECAYING_TRUE) {
+					(*it)->setDecaying(DECAYING_FALSE);
+				}
+			}
+		}
 	}
 }
 
