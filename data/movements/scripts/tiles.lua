@@ -38,10 +38,23 @@ function onStepIn(creature, item, position, fromPosition)
 	if Tile(position):hasFlag(TILESTATE_PROTECTIONZONE) then
 		local lookPosition = player:getPosition()
 		lookPosition:getNextPosition(player:getDirection())
+
 		local depotItem = Tile(lookPosition):getItemByType(ITEM_TYPE_DEPOT)
+		-- Possibly onStepIn triggered on login
+		if not depotItem and player:getDirection() == SOUTH then
+			local directions = {WEST, EAST, NORTH}
+			for _, dir in pairs(directions) do
+				local dirPosition = player:getPosition()
+				dirPosition:getNextPosition(dir)
+				depotItem = Tile(dirPosition):getItemByType(ITEM_TYPE_DEPOT)
+				if depotItem then
+					break
+				end
+			end
+		end
+
 		if depotItem ~= nil then
 			local depotId = getDepotId(depotItem:getUniqueId())
-			print(depotId)
 			-- Initialize depot locker so that we can start decaying items
 			local depotLocker = player:getDepotLocker(depotId)
 
