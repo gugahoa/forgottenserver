@@ -40,12 +40,16 @@ function onStepIn(creature, item, position, fromPosition)
 		lookPosition:getNextPosition(player:getDirection())
 		local depotItem = Tile(lookPosition):getItemByType(ITEM_TYPE_DEPOT)
 		if depotItem ~= nil then
-			local depot = player:getDepotChest(getDepotId(depotItem:getUniqueId()), true)
+			local depotId = getDepotId(depotItem:getUniqueId())
+			print(depotId)
+			-- Initialize depot locker so that we can start decaying items
+			local depotLocker = player:getDepotLocker(depotId)
+
+			local depot = player:getDepotChest(depotId, true)
 			local depotItems = depot:getItemHoldingCount()
 			player:sendTextMessage(MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItems .. " item" .. (depotItems > 1 and "s." or "."))
 
-			switchDecayState(depot, Item.canDecay, Item.decay)
-			switchDecayState(player:getInbox(), Item.canDecay, Item.decay)
+			switchDecayState(depotLocker, Item.canDecay, Item.decay)
 			return true
 		end
 	end
